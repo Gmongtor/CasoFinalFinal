@@ -159,3 +159,25 @@ He corregido el error tipográfico en la llamada al método println.
 
 #### b) Explica brevemente qué cálculo está haciendo y qué tipo de recursividad está empleando.
 El método recursive en el código intenta calcular la potencia de un número a elevado a b, o sea a^b. Funciona multiplicando a por sí mismo b veces de manera recursiva. Si b es 0, devuelve 1 porque cualquier número elevado a 0 es 1. Si a es 0, el resultado es 0 porque 0 elevado a cualquier número es 0. El código utiliza recursividad lineal, realizando una llamada recursiva por cada reducción de b hasta que b llega a 0, en ese momento comienza a devolver el resultado acumulado de las multiplicaciones. Es un método comúnmente usado para ejemplificar cómo las funciones pueden llamarse a sí mismas para resolver problemas que pueden ser divididos en tareas más pequeñas de la misma naturaleza.
+### 4 
+public class SUMADIGITOS {
+    public static void main(String[] args) {
+        int number = 102; // Ejemplo de número
+        int sum = SUMADIGITOS(number);
+        System.out.println("La suma de los dígitos del número " + number + " es " + sum);
+    }
+
+    public static int SUMADIGITOS(int number) {
+        if (number < 0) {
+            number = -number;  // Convierte el número a positivo si es negativo
+        }
+
+        if (number < 10) {
+            return number;  // Caso base: si el número tiene un solo dígito, retorna ese dígito
+        } else {
+            return number % 10 + SUMADIGITOS(number / 10);  // Paso recursivo: suma el último dígito y aplica recursividad al número sin el último dígito
+        }
+    }
+}
+### 5
+Se puede observar en los archivos provenientes de IntelIJ
