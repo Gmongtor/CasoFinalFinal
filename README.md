@@ -151,6 +151,7 @@ public class Main {
         }
     }
 }
+
 Explicación de la Solución:
 
 He agregado un caso base para manejar valores negativos de b, lanzando una excepción para indicar que el valor no es válido.
