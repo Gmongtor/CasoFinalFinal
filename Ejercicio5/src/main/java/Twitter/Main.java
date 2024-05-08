@@ -114,7 +114,7 @@ public class Main {
 
         retweetButton.addActionListener(e -> {
             if (currentUser != null && !currentUser.getTweets().isEmpty()) {
-                Tweet lastTweet = currentUser.getTweets().get(currentUser.getTweets().size() - 1);
+                Tweet lastTweet = currentUser.getTweets().iterator().next();
                 Retweet retweet = new Retweet(currentUser, lastTweet);
                 currentUser.tweet(retweet);
                 timelineArea.append(retweet.toString() + "\n");

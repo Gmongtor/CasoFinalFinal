@@ -59,6 +59,21 @@ public class UserAccount {
     public String getAlias() {
         return alias;
     }
+    public Set<Tweet> getTweets() {
+        return tweets;
+    }
+    public Set<UserAccount> getFollowers() {
+        return followers;
+    }
+    public Set<UserAccount> getFollowing() {
+        return following;
+    }
+    public void sendDirectMessage(DirectMessage dm) {
+        if (dm.getReceiver() == this) { // Asegúrate de que el DM está destinado a este usuario
+            receiveTweet(dm); // Puedes manejar los DMs como tweets especiales o adaptarlo a tus necesidades
+        }
+    }
+
 }
 
 

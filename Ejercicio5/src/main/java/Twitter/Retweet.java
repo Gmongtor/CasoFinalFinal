@@ -3,8 +3,8 @@ package Twitter;
 public class Retweet extends Tweet {
     private Tweet originalTweet;
 
-    public Retweet(UserAccount sender, String message, Tweet originalTweet) {
-        super(sender, message);
+    public Retweet(UserAccount sender, Tweet originalTweet) {
+        super(sender, "RT: " + originalTweet.getMessage());
         this.originalTweet = originalTweet;
     }
 
