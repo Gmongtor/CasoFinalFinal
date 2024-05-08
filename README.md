@@ -158,3 +158,4 @@ He agregado un caso base para manejar valores negativos de b, lanzando una excep
 He corregido el error tipográfico en la llamada al método println.
 
 #### b) Explica brevemente qué cálculo está haciendo y qué tipo de recursividad está empleando.
+El método recursive en el código intenta calcular la potencia de un número a elevado a b, o sea a^b. Funciona multiplicando a por sí mismo b veces de manera recursiva. Si b es 0, devuelve 1 porque cualquier número elevado a 0 es 1. Si a es 0, el resultado es 0 porque 0 elevado a cualquier número es 0. El código utiliza recursividad lineal, realizando una llamada recursiva por cada reducción de b hasta que b llega a 0, en ese momento comienza a devolver el resultado acumulado de las multiplicaciones. Es un método comúnmente usado para ejemplificar cómo las funciones pueden llamarse a sí mismas para resolver problemas que pueden ser divididos en tareas más pequeñas de la misma naturaleza.
