@@ -1,4 +1,5 @@
 # CasoFinalFinal
+He utilizado ChatGPT Y copilot
 ## Link: https://github.com/Gmongtor/CasoFinalFinal.git
 ### Pregunta 1:
 1. b
