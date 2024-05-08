@@ -7,7 +7,8 @@
 4. a
 5. b
 ### Pregunta 2:
-1. Para el diseño de un programa destinado a dispositivos portátiles en telemedicina con una memoria de solo 4 KB, evaluamos tres alternativas considerando su complejidad computacional y uso de memoria:
+#### 1. 
+Para el diseño de un programa destinado a dispositivos portátiles en telemedicina con una memoria de solo 4 KB, evaluamos tres alternativas considerando su complejidad computacional y uso de memoria:
 
 La primera alternativa ofrece una complejidad computacional lineal 
 𝑂
@@ -69,7 +70,8 @@ S(O(log
 
 Conclusión:
 Dado el estricto límite de memoria y la necesidad de procesar eficientemente los datos, la tercera alternativa es la más recomendable. Su enfoque logarítmico en el uso del tiempo y la memoria la convierte en una solución viable y eficaz para manejar grandes volúmenes de datos en dispositivos con recursos limitados, cumpliendo con los requerimientos de un sistema de telemedicina eficiente.
-2. Las tablas hash y los árboles son estructuras de datos que sirven para almacenar y organizar información, pero se utilizan de maneras distintas dependiendo de las necesidades específicas de cada aplicación.
+#### 2. 
+Las tablas hash y los árboles son estructuras de datos que sirven para almacenar y organizar información, pero se utilizan de maneras distintas dependiendo de las necesidades específicas de cada aplicación.
 
 Tablas Hash: Son ideales para situaciones donde la rapidez en la inserción y búsqueda de datos es crítica. Utilizan una función hash para determinar dónde almacenar cada elemento, permitiendo operaciones de inserción y búsqueda muy rápidas, típicamente en tiempo constante 
 𝑂
@@ -92,7 +94,8 @@ Cuándo usar cada uno:
 Tablas Hash: Cuando el rendimiento de acceso directo es más importante que el orden de los datos.
 Árboles: Cuando se necesita mantener un orden entre los datos y realizar búsquedas complejas, como búsquedas de rango.
 En resumen, la elección entre una tabla hash y un árbol se basa en si el orden de los datos y las operaciones relacionadas son importantes o si se prioriza la velocidad de acceso a través de claves únicas.
-3. Pilas y colas son estructuras de datos que manejan elementos de formas opuestas. Las pilas utilizan un enfoque "último en entrar, primero en salir" (LIFO), ideal para aplicaciones como el deshacer acciones en programas o manejar las llamadas de funciones. En contraste, las colas operan bajo un principio "primero en entrar, primero en salir" (FIFO), perfecto para tareas que requieren procesamiento en el orden de llegada, como en la gestión de impresiones o el manejo de eventos en interfaces de usuario.
+#### 3. 
+Pilas y colas son estructuras de datos que manejan elementos de formas opuestas. Las pilas utilizan un enfoque "último en entrar, primero en salir" (LIFO), ideal para aplicaciones como el deshacer acciones en programas o manejar las llamadas de funciones. En contraste, las colas operan bajo un principio "primero en entrar, primero en salir" (FIFO), perfecto para tareas que requieren procesamiento en el orden de llegada, como en la gestión de impresiones o el manejo de eventos en interfaces de usuario.
 
 Ambas estructuras ofrecen operaciones de inserción y eliminación con una complejidad de 
 𝑂
@@ -100,7 +103,8 @@ Ambas estructuras ofrecen operaciones de inserción y eliminación con una compl
 1
 )
 O(1), permitiendo acciones rápidas y eficientes. La elección entre una y otra depende de si necesitas procesar los últimos elementos primero con pilas o mantener un orden de llegada con colas.
-4. GPT
+#### 4. 
+GPT
 El método de ordenación por inserción es un algoritmo simple que construye la lista final ordenada un elemento a la vez. Funciona de manera similar a cómo una persona ordena las cartas en sus manos. Comienza con un elemento como parte de la lista ordenada, y luego va tomando uno por uno los elementos restantes, insertándolos en su posición correcta dentro de la lista ya ordenada hasta que todos los elementos han sido incorporados.
 
 Para el conjunto de datos dado: 50, 20, 84, 13, 22, 16, 89, 85, las iteraciones del método de ordenación por inserción se desarrollarían de la siguiente manera:
