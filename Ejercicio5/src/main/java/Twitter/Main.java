@@ -2,7 +2,6 @@ package Twitter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,14 +12,13 @@ public class Main {
     private static UserAccount currentUser;
     private static JTextArea timelineArea = new JTextArea();  // Initialization to avoid null reference
     private static DefaultListModel<String> userListModel = new DefaultListModel<>();
+    private static JList<String> userList = new JList<>(userListModel);
     private static JFrame frame;
     private static final String USERS_FILE = "users.txt";
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::createAndShowGUI);
         accounts = FileManager.loadUsersFromFile(USERS_FILE);
-
-        SwingUtilities.invokeLater(Main::createAndShowGUI);
     }
 
     private static void createAndShowGUI() {
@@ -79,7 +77,6 @@ public class Main {
         JPanel northPanel = createNorthPanel(cardLayout, cardPanel);
         JScrollPane scrollPane = new JScrollPane(timelineArea);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Timeline"));
-        JList<String> userList = new JList<>(userListModel);
         userList.setBorder(BorderFactory.createTitledBorder("Users"));
         mainPanel.add(northPanel, BorderLayout.NORTH);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
@@ -102,6 +99,8 @@ public class Main {
         JTextField dmTextField = new JTextField(10);
         JButton logoutButton = new JButton("Logout");
         JButton detailsButton = new JButton("My Details");
+        JButton sortAscButton = new JButton("Sort Asc");
+        JButton sortDescButton = new JButton("Sort Desc");
 
         northPanel.add(new JLabel("Follow User:"));
         northPanel.add(followTextField);
@@ -115,28 +114,15 @@ public class Main {
         northPanel.add(dmButton);
         northPanel.add(logoutButton);
         northPanel.add(detailsButton);
+        northPanel.add(sortAscButton);
+        northPanel.add(sortDescButton);
 
-        setupListeners(followButton, followTextField, tweetButton, tweetTextField, retweetButton, dmButton, dmTextField, logoutButton, detailsButton, cardLayout, cardPanel);
+        setupListeners(followButton, followTextField, tweetButton, tweetTextField, retweetButton, dmButton, dmTextField, logoutButton, detailsButton, sortAscButton, sortDescButton, cardLayout, cardPanel);
 
         return northPanel;
     }
-    public static void addUser(String alias, String email) {
-        accounts.put(alias, new UserAccount(alias, email));
-        FileManager.saveUserToFile(USERS_FILE, alias, email); // Guardar usuario en el archivo
-    }
 
-    public static void loadUsersFromFile(String filename) {
-        accounts = FileManager.loadUsersFromFile(filename);
-    }
-
-    public static void sortUsersByEmail() {
-        ArrayList<UserAccount> users = new ArrayList<>(accounts.values());
-        Collections.sort(users, (u1, u2) -> u1.getEmail().compareToIgnoreCase(u2.getEmail()));
-        accounts.clear();
-        users.forEach(user -> accounts.put(user.getAlias(), user));
-    }
-
-    private static void setupListeners(JButton followButton, JTextField followTextField, JButton tweetButton, JTextField tweetTextField, JButton retweetButton, JButton dmButton, JTextField dmTextField, JButton logoutButton, JButton detailsButton, CardLayout cardLayout, JPanel cardPanel) {
+    private static void setupListeners(JButton followButton, JTextField followTextField, JButton tweetButton, JTextField tweetTextField, JButton retweetButton, JButton dmButton, JTextField dmTextField, JButton logoutButton, JButton detailsButton, JButton sortAscButton, JButton sortDescButton, CardLayout cardLayout, JPanel cardPanel) {
         followButton.addActionListener(e -> {
             String aliasToFollow = followTextField.getText();
             UserAccount toFollow = accounts.get(aliasToFollow);
@@ -195,13 +181,43 @@ public class Main {
                 JOptionPane.showMessageDialog(frame, userDetails, "My Details", JOptionPane.INFORMATION_MESSAGE);
             }
         });
+
+        sortAscButton.addActionListener(e -> {
+            sortUsersByEmail(true);
+            updateUsersList();
+        });
+
+        sortDescButton.addActionListener(e -> {
+            sortUsersByEmail(false);
+            updateUsersList();
+        });
     }
 
     private static void updateUsersList() {
         userListModel.clear();
         accounts.keySet().forEach(userListModel::addElement);
     }
+
+    public static void sortUsersByEmail(boolean ascending) {
+        ArrayList<UserAccount> users = new ArrayList<>(accounts.values());
+        if (ascending) {
+            Collections.sort(users, (u1, u2) -> u1.getEmail().compareToIgnoreCase(u2.getEmail()));
+        } else {
+            Collections.sort(users, (u1, u2) -> u2.getEmail().compareToIgnoreCase(u1.getEmail()));
+        }
+        accounts.clear();
+        users.forEach(user -> accounts.put(user.getAlias(), user));
+    }
+
+    public static void addUser(String alias, String email) {
+        accounts.put(alias, new UserAccount(alias, email));
+    }
+
+    public static void loadUsersFromFile(String filename) {
+        accounts = FileManager.loadUsersFromFile(filename);
+    }
 }
+
 
 
 

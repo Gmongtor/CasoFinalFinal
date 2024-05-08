@@ -78,7 +78,7 @@ public class UserAccount {
     }
 
     public static void sortUsersByEmail() {
-        Main.sortUsersByEmail();
+        Main.sortUsersByEmail(true);
     }
 
     // Getters and setters
