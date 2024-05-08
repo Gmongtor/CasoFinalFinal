@@ -7,7 +7,7 @@ public class Tweet {
     protected String message;
     protected LocalDate time;
 
-    public Tweet(String message) {
+    public Tweet(UserAccount sender, String message) {
         if (message.length() > 140) {
             throw new IllegalArgumentException("Message cannot exceed 140 characters");
         }
@@ -34,5 +34,6 @@ public class Tweet {
         return "Tweet from " + sender.getAlias() + " at " + time + ": " + message;
     }
 }
+
 
 

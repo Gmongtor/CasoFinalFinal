@@ -59,13 +59,15 @@ public class Main {
 
     private static void setupUserInterface(JFrame frame) {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
         JTextField followTextField = new JTextField(10);
         JButton followButton = new JButton("Follow");
         JTextField tweetTextField = new JTextField(10);
         JButton tweetButton = new JButton("Tweet");
+        JButton retweetButton = new JButton("Retweet Last");
+        JButton dmButton = new JButton("Send DM");
+        JTextField dmTextField = new JTextField(10);
 
         northPanel.add(new JLabel("Follow User:"));
         northPanel.add(followTextField);
@@ -73,6 +75,10 @@ public class Main {
         northPanel.add(new JLabel("Your Tweet:"));
         northPanel.add(tweetTextField);
         northPanel.add(tweetButton);
+        northPanel.add(retweetButton);
+        northPanel.add(new JLabel("DM User:"));
+        northPanel.add(dmTextField);
+        northPanel.add(dmButton);
 
         timelineArea = new JTextArea();
         timelineArea.setEditable(false);
@@ -100,9 +106,31 @@ public class Main {
         tweetButton.addActionListener(e -> {
             String content = tweetTextField.getText();
             if (currentUser != null && !content.isEmpty()) {
-                Tweet tweet = new Tweet(content);
+                Tweet tweet = new Tweet(currentUser, content);
                 currentUser.tweet(tweet);
-                timelineArea.append(currentUser.getAlias() + ": " + content + "\n");
+                timelineArea.append(tweet.toString() + "\n");
+            }
+        });
+
+        retweetButton.addActionListener(e -> {
+            if (currentUser != null && !currentUser.getTweets().isEmpty()) {
+                Tweet lastTweet = currentUser.getTweets().get(currentUser.getTweets().size() - 1);
+                Retweet retweet = new Retweet(currentUser, lastTweet);
+                currentUser.tweet(retweet);
+                timelineArea.append(retweet.toString() + "\n");
+            }
+        });
+
+        dmButton.addActionListener(e -> {
+            String receiverAlias = dmTextField.getText();
+            String message = tweetTextField.getText();
+            UserAccount receiver = accounts.get(receiverAlias);
+            if (currentUser != null && receiver != null && !message.isEmpty()) {
+                DirectMessage dm = new DirectMessage(currentUser, receiver, message);
+                currentUser.sendDirectMessage(dm);
+                timelineArea.append(dm.toString() + "\n");
+            } else {
+                JOptionPane.showMessageDialog(frame, "DM failed: Check user and message", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -115,6 +143,7 @@ public class Main {
         accounts.keySet().forEach(userListModel::addElement);
     }
 }
+
 
 
 
