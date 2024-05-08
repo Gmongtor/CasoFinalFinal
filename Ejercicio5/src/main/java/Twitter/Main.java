@@ -27,11 +27,11 @@ public class Main {
         JPanel cardPanel = new JPanel(cardLayout);
 
         JPanel loginPanel = createLoginPanel(cardLayout, cardPanel);
-        JPanel mainPanel = createMainPanel();
+        JPanel mainPanel = createMainPanel(cardLayout, cardPanel);
 
         cardPanel.add(loginPanel, "Login");
         cardPanel.add(mainPanel, "Main");
-        frame.add(cardPanel);
+        frame.getContentPane().add(cardPanel);
 
         frame.setVisible(true);
     }
@@ -56,7 +56,7 @@ public class Main {
             String email = emailInput.getText();
             if (Utils.isValidAlias(alias) && Utils.isValidEmail(email)) {
                 currentUser = accounts.computeIfAbsent(alias, k -> new UserAccount(alias, email));
-                updateUsersList();  // Update the list of users upon successful login
+                updateUsersList();
                 cardLayout.show(cardPanel, "Main");
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid alias or email", "Error", JOptionPane.ERROR_MESSAGE);
@@ -66,11 +66,11 @@ public class Main {
         return loginPanel;
     }
 
-    private static JPanel createMainPanel() {
+    private static JPanel createMainPanel(CardLayout cardLayout, JPanel cardPanel) {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBackground(new Color(245, 248, 250)); // Background color similar to Twitter
 
-        JPanel northPanel = createNorthPanel();
+        JPanel northPanel = createNorthPanel(cardLayout, cardPanel);
         JScrollPane scrollPane = new JScrollPane(timelineArea);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Timeline"));
         JList<String> userList = new JList<>(userListModel);
@@ -82,7 +82,7 @@ public class Main {
         return mainPanel;
     }
 
-    private static JPanel createNorthPanel() {
+    private static JPanel createNorthPanel(CardLayout cardLayout, JPanel cardPanel) {
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
         northPanel.setBackground(Color.WHITE);
@@ -94,6 +94,8 @@ public class Main {
         JButton retweetButton = new JButton("Retweet Last");
         JButton dmButton = new JButton("Send DM");
         JTextField dmTextField = new JTextField(10);
+        JButton logoutButton = new JButton("Logout");
+        JButton detailsButton = new JButton("My Details");
 
         northPanel.add(new JLabel("Follow User:"));
         northPanel.add(followTextField);
@@ -105,13 +107,15 @@ public class Main {
         northPanel.add(new JLabel("DM User:"));
         northPanel.add(dmTextField);
         northPanel.add(dmButton);
+        northPanel.add(logoutButton);
+        northPanel.add(detailsButton);
 
-        setupListeners(followButton, followTextField, tweetButton, tweetTextField, retweetButton, dmButton, dmTextField);
+        setupListeners(followButton, followTextField, tweetButton, tweetTextField, retweetButton, dmButton, dmTextField, logoutButton, detailsButton, cardLayout, cardPanel);
 
         return northPanel;
     }
 
-    private static void setupListeners(JButton followButton, JTextField followTextField, JButton tweetButton, JTextField tweetTextField, JButton retweetButton, JButton dmButton, JTextField dmTextField) {
+    private static void setupListeners(JButton followButton, JTextField followTextField, JButton tweetButton, JTextField tweetTextField, JButton retweetButton, JButton dmButton, JTextField dmTextField, JButton logoutButton, JButton detailsButton, CardLayout cardLayout, JPanel cardPanel) {
         followButton.addActionListener(e -> {
             String aliasToFollow = followTextField.getText();
             UserAccount toFollow = accounts.get(aliasToFollow);
@@ -149,11 +153,25 @@ public class Main {
             String message = tweetTextField.getText();
             UserAccount receiver = accounts.get(receiverAlias);
             if (currentUser != null && receiver != null && !message.isEmpty()) {
-                DirectMessage dm = new DirectMessage(currentUser, receiver, message);
                 currentUser.sendDirectMessage(receiver, message);
                 timelineArea.append("DM to " + receiverAlias + ": " + message + "\n");
             } else {
                 JOptionPane.showMessageDialog(frame, "DM failed: Check user and message", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        logoutButton.addActionListener(e -> {
+            currentUser = null;
+            updateUsersList();
+            cardLayout.show(cardPanel, "Login");
+        });
+
+        detailsButton.addActionListener(e -> {
+            if (currentUser != null) {
+                String userDetails = "Followers: " + currentUser.getFollowers().size() +
+                        "\nFollowing: " + currentUser.getFollowing().size() +
+                        "\nTweets: " + currentUser.getTweets().size();
+                JOptionPane.showMessageDialog(frame, userDetails, "My Details", JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }
@@ -163,6 +181,7 @@ public class Main {
         accounts.keySet().forEach(userListModel::addElement);
     }
 }
+
 
 
 
