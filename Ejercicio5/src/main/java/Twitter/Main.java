@@ -7,10 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-
     private static Map<String, UserAccount> accounts = new HashMap<>();
     private static UserAccount currentUser;
-    private static JTextArea timelineArea;
+    private static JTextArea timelineArea = new JTextArea();  // Initialization to avoid null reference
     private static DefaultListModel<String> userListModel = new DefaultListModel<>();
     private static JFrame frame;
 
@@ -57,6 +56,7 @@ public class Main {
             String email = emailInput.getText();
             if (Utils.isValidAlias(alias) && Utils.isValidEmail(email)) {
                 currentUser = accounts.computeIfAbsent(alias, k -> new UserAccount(alias, email));
+                updateUsersList();  // Update the list of users upon successful login
                 cardLayout.show(cardPanel, "Main");
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid alias or email", "Error", JOptionPane.ERROR_MESSAGE);
@@ -150,7 +150,7 @@ public class Main {
             UserAccount receiver = accounts.get(receiverAlias);
             if (currentUser != null && receiver != null && !message.isEmpty()) {
                 DirectMessage dm = new DirectMessage(currentUser, receiver, message);
-                currentUser.sendDirectMessage(dm);
+                currentUser.sendDirectMessage(receiver, message);
                 timelineArea.append("DM to " + receiverAlias + ": " + message + "\n");
             } else {
                 JOptionPane.showMessageDialog(frame, "DM failed: Check user and message", "Error", JOptionPane.ERROR_MESSAGE);
@@ -163,6 +163,7 @@ public class Main {
         accounts.keySet().forEach(userListModel::addElement);
     }
 }
+
 
 
 

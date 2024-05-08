@@ -23,26 +23,72 @@ public class UserAccount {
 
     public void follow(UserAccount other) {
         if (other == null || this == other || this.following.contains(other)) {
-            return; // Evita seguir a null, a sí mismo o seguir múltiples veces
+            return;
         }
         this.following.add(other);
-        other.followers.add(this); // Añade este usuario a los seguidores del otro
+        other.followers.add(this);
     }
 
     public void tweet(Tweet tweet) {
         if (tweet == null) {
-            return; // Evita añadir tweets nulos
+            return;
         }
         this.tweets.add(tweet);
-        for (UserAccount follower : this.followers) {
-            follower.receiveTweet(tweet); // Propaga el tweet a los seguidores
-        }
+        this.followers.forEach(follower -> follower.receiveTweet(tweet));
     }
 
     public void receiveTweet(Tweet tweet) {
         if (tweet != null) {
-            this.tweets.add(tweet); // Añade el tweet recibido al conjunto de tweets
+            this.tweets.add(tweet);
         }
+    }
+
+    public void sendDirectMessage(UserAccount receiver, String message) {
+        if (receiver != null && message != null && !message.isEmpty()) {
+            DirectMessage dm = new DirectMessage(this, receiver, message);
+            receiver.receiveDirectMessage(dm);
+            // Store this DM or log it as needed
+        }
+    }
+
+    public void receiveDirectMessage(DirectMessage dm) {
+        // You could store received messages or update a user interface component here
+        System.out.println("DM from " + dm.getSender().getAlias() + ": " + dm.getMessage());
+    }
+
+    public void publishTweet(String message) throws IllegalArgumentException {
+        Tweet newTweet = new Tweet(this, message);
+        this.tweet(newTweet);
+    }
+
+    // Utility methods to simplify the management of relationships
+    public void unfollow(UserAccount other) {
+        if (other == null || !this.following.contains(other)) {
+            return;
+        }
+        this.following.remove(other);
+        other.followers.remove(this);
+    }
+
+    // Getters and setters
+    public String getAlias() {
+        return alias;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Set<Tweet> getTweets() {
+        return new HashSet<>(tweets); // Return a copy to protect the internal structure
+    }
+
+    public Set<UserAccount> getFollowers() {
+        return new HashSet<>(followers); // Return a copy to protect the internal structure
+    }
+
+    public Set<UserAccount> getFollowing() {
+        return new HashSet<>(following); // Return a copy to protect the internal structure
     }
 
     @Override
@@ -55,26 +101,8 @@ public class UserAccount {
                 ", tweets=" + tweets.size() +
                 '}';
     }
-
-    public String getAlias() {
-        return alias;
-    }
-    public Set<Tweet> getTweets() {
-        return tweets;
-    }
-    public Set<UserAccount> getFollowers() {
-        return followers;
-    }
-    public Set<UserAccount> getFollowing() {
-        return following;
-    }
-    public void sendDirectMessage(DirectMessage dm) {
-        if (dm.getReceiver() == this) { // Asegúrate de que el DM está destinado a este usuario
-            receiveTweet(dm); // Puedes manejar los DMs como tweets especiales o adaptarlo a tus necesidades
-        }
-    }
-
 }
+
 
 
 

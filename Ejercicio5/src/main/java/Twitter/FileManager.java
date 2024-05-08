@@ -19,5 +19,16 @@ public class FileManager {
         }
         return accounts;
     }
+    public static UserAccount loadUserByAlias(String filename, String alias) {
+        Map<String, UserAccount> accounts = loadUsersFromFile(filename);
+        accounts.put(null, null); // Centinela
+        for (String key : accounts.keySet()) {
+            if (key != null && key.equals(alias)) {
+                return accounts.get(key);
+            }
+        }
+        return null; // Si no se encuentra, devuelve null
+    }
+
 }
 
