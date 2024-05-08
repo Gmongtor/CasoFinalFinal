@@ -118,3 +118,42 @@ Insertar 16: Comparar sucesivamente y colocarlo entre 13 y 20. Nuevo orden: 13, 
 Insertar 89: Comparar con 84, y colocarlo después porque 89 es mayor. Nuevo orden: 13, 16, 20, 22, 50, 84, 89.
 Insertar 85: Comparar con 89 y colocarlo antes, entre 84 y 89. Nuevo orden: 13, 16, 20, 22, 50, 84, 85, 89.
 Cada elemento se compara con los elementos de la lista ordenada desde el más grande hacia el más pequeño hasta encontrar su posición correcta, lo que puede ser eficiente para listas pequeñas o listas que ya están parcialmente ordenadas, pero el método puede volverse ineficiente para listas grandes debido a que cada inserción puede requerir desplazar muchos elementos.
+### 3.
+#### a) ¿Qué imprime el código? En caso de que no compile indique el motivo y arregle el programa como considere conveniente. Explique su solución de manera concisa.
+El código proporcionado intenta realizar un cálculo recursivo pero no compilará correctamente debido a varios errores:
+
+Error de Sintaxis en la Línea 4:
+System.out.println(a) está mal escrito como System.out.println(a).
+Problema de Lógica en la Recursividad:
+La función recursive es llamada con un valor inicial de b = -2, y en el código no hay un caso base que maneje b negativos. Esto resultará en un bucle infinito de llamadas recursivas, ya que b nunca alcanzará 0, y continuará decreciendo indefinidamente.
+Código Corregido:
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            int a = recursive(1, -2);
+            System.out.println(a);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static int recursive(int a, int b) {
+        if (b < 0) {
+            throw new IllegalArgumentException("El segundo argumento no debe ser negativo.");
+        } else if (b == 0) {
+            return 1;
+        } else if (a == 0) {
+            return 0;
+        } else {
+            return a * recursive(a, b-1);
+        }
+    }
+}
+Explicación de la Solución:
+
+He agregado un caso base para manejar valores negativos de b, lanzando una excepción para indicar que el valor no es válido.
+He corregido el error tipográfico en la llamada al método println.
+
+#### b) Explica brevemente qué cálculo está haciendo y qué tipo de recursividad está empleando.
