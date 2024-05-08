@@ -1,4 +1,5 @@
 package Twitter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,6 +22,7 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
+        frame.getContentPane().setBackground(new Color(245, 248, 250)); // Twitter-like background color
 
         createLoginPanel(frame);
 
@@ -40,6 +42,7 @@ public class Main {
         loginPanel.add(emailInput);
         loginPanel.add(loginButton);
         loginPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        loginPanel.setBackground(Color.WHITE); // Light background for the login panel
 
         frame.add(loginPanel);
 
@@ -59,8 +62,12 @@ public class Main {
 
     private static void setupUserInterface(JFrame frame) {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBackground(new Color(245, 248, 250)); // Background color similar to Twitter
+
+        // Top panel for inputs and actions
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout());
+        northPanel.setBackground(Color.WHITE);
         JTextField followTextField = new JTextField(10);
         JButton followButton = new JButton("Follow");
         JTextField tweetTextField = new JTextField(10);
@@ -80,18 +87,29 @@ public class Main {
         northPanel.add(dmTextField);
         northPanel.add(dmButton);
 
+        // Timeline area setup
         timelineArea = new JTextArea();
         timelineArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(timelineArea);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Timeline"));
 
+        // User list setup
         JList<String> userList = new JList<>(userListModel);
         userList.setBorder(BorderFactory.createTitledBorder("Users"));
 
+        // Add components to main panel
         mainPanel.add(northPanel, BorderLayout.NORTH);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         mainPanel.add(userList, BorderLayout.EAST);
 
+        // Listeners for buttons
+        setupListeners(followButton, followTextField, tweetButton, tweetTextField, retweetButton, dmButton, dmTextField, frame);
+
+        frame.getContentPane().add(mainPanel);
+        updateUsersList();
+    }
+
+    private static void setupListeners(JButton followButton, JTextField followTextField, JButton tweetButton, JTextField tweetTextField, JButton retweetButton, JButton dmButton, JTextField dmTextField, JFrame frame) {
         followButton.addActionListener(e -> {
             String aliasToFollow = followTextField.getText();
             UserAccount toFollow = accounts.get(aliasToFollow);
@@ -133,9 +151,6 @@ public class Main {
                 JOptionPane.showMessageDialog(frame, "DM failed: Check user and message", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
-
-        frame.getContentPane().add(mainPanel);
-        updateUsersList();
     }
 
     private static void updateUsersList() {
@@ -143,6 +158,7 @@ public class Main {
         accounts.keySet().forEach(userListModel::addElement);
     }
 }
+
 
 
 
