@@ -1,11 +1,11 @@
 package Twitter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Tweet {
     protected UserAccount sender;
     protected String message;
-    protected LocalDate time;
+    protected LocalDateTime time;
 
     public Tweet(UserAccount sender, String message) {
         if (message.length() > 140) {
@@ -13,7 +13,7 @@ public class Tweet {
         }
         this.sender = sender;
         this.message = message;
-        this.time = LocalDate.now(); // Current date
+        this.time = LocalDateTime.now(); // Use LocalDateTime for precise time
     }
 
     // Getters
@@ -25,15 +25,17 @@ public class Tweet {
         return message;
     }
 
-    public LocalDate getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
     @Override
     public String toString() {
-        return "Tweet from " + sender.getAlias() + " at " + time + ": " + message;
+        // Format the time in a more readable format
+        return "Tweet from " + sender.getAlias() + " at " + time.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ": " + message;
     }
 }
+
 
 
 

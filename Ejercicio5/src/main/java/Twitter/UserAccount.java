@@ -1,7 +1,6 @@
 package Twitter;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class UserAccount {
@@ -24,21 +23,26 @@ public class UserAccount {
 
     public void follow(UserAccount other) {
         if (other == null || this == other || this.following.contains(other)) {
-            return; // Prevent following null, oneself, or following twice
+            return; // Evita seguir a null, a sí mismo o seguir múltiples veces
         }
         this.following.add(other);
-        other.followers.add(this);
+        other.followers.add(this); // Añade este usuario a los seguidores del otro
     }
 
     public void tweet(Tweet tweet) {
+        if (tweet == null) {
+            return; // Evita añadir tweets nulos
+        }
         this.tweets.add(tweet);
         for (UserAccount follower : this.followers) {
-            follower.receiveTweet(tweet);
+            follower.receiveTweet(tweet); // Propaga el tweet a los seguidores
         }
     }
 
     public void receiveTweet(Tweet tweet) {
-        this.tweets.add(tweet);
+        if (tweet != null) {
+            this.tweets.add(tweet); // Añade el tweet recibido al conjunto de tweets
+        }
     }
 
     @Override
@@ -46,6 +50,9 @@ public class UserAccount {
         return "UserAccount{" +
                 "alias='" + alias + '\'' +
                 ", email='" + email + '\'' +
+                ", followers=" + followers.size() +
+                ", following=" + following.size() +
+                ", tweets=" + tweets.size() +
                 '}';
     }
 
@@ -53,5 +60,6 @@ public class UserAccount {
         return alias;
     }
 }
+
 
 
