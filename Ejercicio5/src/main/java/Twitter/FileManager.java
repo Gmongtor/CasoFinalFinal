@@ -30,5 +30,13 @@ public class FileManager {
         return null; // Si no se encuentra, devuelve null
     }
 
+    public static void saveUserToFile(String usersFile, String alias, String email) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(usersFile, true))) {
+            writer.write(alias + "," + email);
+            writer.newLine();
+        } catch (IOException e) {
+            System.out.println("Failed to write the user to the file: " + e.getMessage());
+        }
+    }
 }
 

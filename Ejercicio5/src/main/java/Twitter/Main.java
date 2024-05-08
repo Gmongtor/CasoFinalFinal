@@ -3,6 +3,8 @@ package Twitter;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +14,12 @@ public class Main {
     private static JTextArea timelineArea = new JTextArea();  // Initialization to avoid null reference
     private static DefaultListModel<String> userListModel = new DefaultListModel<>();
     private static JFrame frame;
+    private static final String USERS_FILE = "users.txt";
 
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(Main::createAndShowGUI);
+        accounts = FileManager.loadUsersFromFile(USERS_FILE);
+
         SwingUtilities.invokeLater(Main::createAndShowGUI);
     }
 
@@ -113,6 +119,21 @@ public class Main {
         setupListeners(followButton, followTextField, tweetButton, tweetTextField, retweetButton, dmButton, dmTextField, logoutButton, detailsButton, cardLayout, cardPanel);
 
         return northPanel;
+    }
+    public static void addUser(String alias, String email) {
+        accounts.put(alias, new UserAccount(alias, email));
+        FileManager.saveUserToFile(USERS_FILE, alias, email); // Guardar usuario en el archivo
+    }
+
+    public static void loadUsersFromFile(String filename) {
+        accounts = FileManager.loadUsersFromFile(filename);
+    }
+
+    public static void sortUsersByEmail() {
+        ArrayList<UserAccount> users = new ArrayList<>(accounts.values());
+        Collections.sort(users, (u1, u2) -> u1.getEmail().compareToIgnoreCase(u2.getEmail()));
+        accounts.clear();
+        users.forEach(user -> accounts.put(user.getAlias(), user));
     }
 
     private static void setupListeners(JButton followButton, JTextField followTextField, JButton tweetButton, JTextField tweetTextField, JButton retweetButton, JButton dmButton, JTextField dmTextField, JButton logoutButton, JButton detailsButton, CardLayout cardLayout, JPanel cardPanel) {

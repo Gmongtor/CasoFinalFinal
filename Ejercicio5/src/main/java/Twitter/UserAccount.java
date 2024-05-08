@@ -69,6 +69,17 @@ public class UserAccount {
         this.following.remove(other);
         other.followers.remove(this);
     }
+    public void addUser(String alias, String email) {
+        Main.addUser(alias, email);
+    }
+
+    public static void loadUsersFromFile(String filename) {
+        Main.loadUsersFromFile(filename);
+    }
+
+    public static void sortUsersByEmail() {
+        Main.sortUsersByEmail();
+    }
 
     // Getters and setters
     public String getAlias() {
