@@ -47,6 +47,10 @@ public class UserAccount {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    public String getAlias() {
+        return alias;
+    }
 }
 
 
